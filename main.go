@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"strconv"
+	"strings"
 )
 
 type Playbook struct {
@@ -62,7 +64,48 @@ func main() {
 		}
 	}
 
-	for _, v := range playbook.Tasks.Packages.DebianFamily {
-		fmt.Printf("todo: install package %s\n", v)
+	osReleaseFile, err := os.ReadFile("/etc/os-release")
+	if err != nil {
+		panic(err)
 	}
+	osReleaseString := string(osReleaseFile)
+	rhLike := false
+	debianLike := false
+	for _, v := range strings.Split(osReleaseString, "\n") {
+		entry := strings.Split(v, "=")
+		if entry[0] == "ID" {
+			if entry[1] == "debian" || entry[1] == "ubuntu" {
+				fmt.Println("OS is debian-like")
+				debianLike = true
+			}
+
+			if entry[1] == "fedora" || entry[1] == "centos" {
+				fmt.Println("OS is rh-like")
+				rhLike = true
+			}
+		}
+	}
+
+	if debianLike {
+		for _, v := range playbook.Tasks.Packages.DebianFamily {
+			fmt.Printf("Install package %s\n", v)
+			out, err := exec.Command("sudo", "apt-get", "-y", "install", v).CombinedOutput()
+			if err != nil {
+				panic(err)
+			}
+			fmt.Println(string(out))
+		}
+	}
+
+	if rhLike {
+		for _, v := range playbook.Tasks.Packages.RedhatFamily {
+			fmt.Printf("Install package %s\n", v)
+			out, err := exec.Command("sudo", "dnf", "-y", "install", v).CombinedOutput()
+			if err != nil {
+				panic(err)
+			}
+			fmt.Println(string(out))
+		}
+	}
+
 }
