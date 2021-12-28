@@ -1,0 +1,40 @@
+name: CI
+
+on: [push, workflow_dispatch]
+
+jobs:
+  run-in-container-deb:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [latest, rolling, devel]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          stable: 'false'
+          go-version: '1.18.0-beta1'
+      - run: go build -o test-data/sat main.go
+      - name: Build Test Container Ubuntu ${{ matrix.version }}
+        run: docker build --build-arg=VERSION=${{ matrix.version }} -t system-automation-test-ubuntu${{ matrix.version }} --file test-data/Containerfile.ubuntu .
+      - name: Run Test Ubuntu ${{ matrix.version }}
+        run: docker run --user user --tty --volume $PWD:/mnt system-automation-test-ubuntu${{ matrix.version }}
+
+  run-in-container-yum:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [latest, rawhide]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          stable: 'false'
+          go-version: '1.18.0-beta1'
+      - run: go build -o test-data/sat main.go
+      - name: Build Test Container Fedora ${{ matrix.version }}
+        run: docker build --build-arg=VERSION=${{ matrix.version }} -t system-automation-test-fedora${{ matrix.version }} --file test-data/Containerfile.fedora .
+      - name: Run Test Fedora ${{ matrix.version }}
+        run: docker run --user user --tty --volume $PWD:/mnt system-automation-test-fedora${{ matrix.version }}

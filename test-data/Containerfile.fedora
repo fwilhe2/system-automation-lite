@@ -1,0 +1,9 @@
+ARG VERSION
+
+FROM fedora:$VERSION
+
+RUN mkdir test-data
+COPY test-data/sat /
+COPY test-data/simple.json /test-data/simple.json
+
+ENTRYPOINT [ "/sat" ]
