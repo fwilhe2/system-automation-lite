@@ -2,6 +2,11 @@ ARG VERSION
 
 FROM fedora:$VERSION
 
+RUN mkdir -p /home/user && echo "user:x:1001:1001:user:/home/user:/bin/bash" >> /etc/passwd \
+  && chown -R user /home/user
+
+WORKDIR /home/user
+
 RUN mkdir test-data
 COPY test-data/sat /
 COPY test-data/simple.json /test-data/simple.json
