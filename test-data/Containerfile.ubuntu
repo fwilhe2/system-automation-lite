@@ -4,8 +4,7 @@ FROM ubuntu:$VERSION
 
 RUN apt-get update && apt-get install -y sudo
 
-RUN mkdir -p /home/user && echo "user:x:1001:1001:user:/home/user:/bin/bash" >> /etc/passwd \
-  && chown -R user /home/user
+RUN useradd -ms /bin/bash user
 
 WORKDIR /home/user
 
