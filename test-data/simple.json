@@ -1,0 +1,36 @@
+{
+    "Meta": {
+        "Name": "Simple Example",
+        "Description": "Baseline example. This description field can be used for documentation purposes."
+    },
+    "Tasks": {
+        "FileSystem": {
+            "Directories": [
+                {
+                    "Path": "software",
+                    "Mode": "750"
+                },
+                {
+                    "Path": "temp",
+                    "Mode": "750"
+                },
+                {
+                    "Path": "code",
+                    "Mode": "750"
+                }
+            ]
+        },
+        "Packages": {
+            "DebianFamily": [
+                "htop",
+                "httpie",
+                "zsh"
+            ],
+            "RedhatFamily": [
+                "htop",
+                "httpie",
+                "zsh"
+            ]
+        }
+    }
+}
