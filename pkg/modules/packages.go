@@ -12,7 +12,7 @@ type Packages struct {
 }
 
 func (p *Packages) PaseConfig() bool {
-	content, err := os.ReadFile("test-data/foo.bar.Packages")
+	content, err := os.ReadFile("foo.bar.Packages")
 	if err != nil {
 		return false
 	}

@@ -19,7 +19,7 @@ type Files struct {
 }
 
 func (f *Files) PaseConfig() bool {
-	content, err := os.ReadFile("test-data/foo.bar.Files")
+	content, err := os.ReadFile("foo.bar.Files")
 	if err != nil {
 		return false
 	}
