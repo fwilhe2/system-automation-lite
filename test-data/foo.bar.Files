@@ -1,0 +1,16 @@
+{
+    "Directories": [
+        {
+            "Path": "software",
+            "Mode": "750"
+        },
+        {
+            "Path": "temp",
+            "Mode": "750"
+        },
+        {
+            "Path": "code",
+            "Mode": "750"
+        }
+    ]
+}
