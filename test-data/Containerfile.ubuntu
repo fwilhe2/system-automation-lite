@@ -11,7 +11,7 @@ WORKDIR /home/user
 RUN echo 'user ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 RUN mkdir test-data
-COPY test-data/sat .
-COPY test-data/simple.json ./test-data/simple.json
+COPY test-data .
+
 
 ENTRYPOINT [ "/home/user/sat" ]
